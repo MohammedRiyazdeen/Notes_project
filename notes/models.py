@@ -7,25 +7,21 @@ from django.utils.text import slugify
 class Category(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=125)
-    slug = models.SlugField(blank=True,null=True)
+    slug = models.SlugField(blank=True, null=True)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['user', 'name'], name='unique_category_per_user')
         ]
-        #(Older style)
-        #unique_together = ('user', 'name')
-
 
     def __str__(self):
-        return self.name 
-    
+        return self.name
+
     def save(self, *args, **kwargs):
+        base_slug = slugify(self.name)   #Always regenerate slug from name
+        self.slug = f"{base_slug}-{self.user.id}"  #Append user.id to guarantee uniqueness per user
+        super().save(*args, **kwargs)
 
-        if not self.slug:
-            self.slug = slugify(self.name)
-
-        super(Category,self).save(*args, **kwargs)
 
 
 class Note(models.Model):

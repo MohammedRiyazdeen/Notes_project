@@ -113,14 +113,14 @@ def update_category(request, slug):
     obj = get_object_or_404(Category, slug=slug, user=request.user)
 
     if request.method == 'POST':
-        form = CategoryForm(request.POST, instance=obj, user=request.user)   # ✅ pass user
+        form = CategoryForm(request.POST, instance=obj, user=request.user)   
         if form.is_valid():
             form.instance.user = request.user
             form.save()
             messages.success(request, 'Your category has been updated!')
             return redirect('list-category')
     else:
-        form = CategoryForm(instance=obj, user=request.user)   # ✅ pass user
+        form = CategoryForm(instance=obj, user=request.user)   
 
     return render(request, 'categories/update_category.html', {"form": form})
 
@@ -149,8 +149,6 @@ def delete_category(request, slug):
 @login_required
 def notes_by_category(request, slug):
     category = get_object_or_404(Category, slug=slug, user=request.user)
-    
-    
     notes = Note.objects.filter(category=category, user=request.user)
     return render(request, 'categories/notes_by_category.html', {"category":category,"notes":notes})
 
