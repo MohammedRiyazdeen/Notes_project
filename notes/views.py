@@ -48,30 +48,32 @@ def list_notes(request):
 
 @login_required
 def update_note(request, pk):
-    object = get_object_or_404(Note, pk=pk, user=request.user)
+    obj = get_object_or_404(Note, pk=pk, user=request.user)
+
     if request.method == 'POST':
-        n_form = NoteForm(request.POST, instance=object, user=request.user)
-        c_form = CategoryForm(request.POST)
+        n_form = NoteForm(request.POST, instance=obj, user=request.user)
+        c_form = CategoryForm(request.POST, user=request.user)   # FIXED
 
         if n_form.is_valid():
             note = n_form.save(commit=False)
             note.user = request.user
             if c_form.is_valid() and c_form.cleaned_data.get('name'):
                 cate = c_form.save(commit=False)
-                cate.user = request.user 
+                cate.user = request.user
                 cate.save()
-                note.category = cate 
+                note.category = cate
             note.save()
 
-            messages.success(request, f'Your note has been updated!')
+            messages.success(request, 'Your note has been updated!')
             return redirect('list-note')
     else:
-        n_form = NoteForm(instance=object, user=request.user) 
-        c_form = CategoryForm(user=request.user)
-    context ={
-        "n_form" : n_form,
-        "c_form" : c_form
-    }                   
+        n_form = NoteForm(instance=obj, user=request.user)
+        c_form = CategoryForm(user=request.user)   # FIXED
+
+    context = {
+        "n_form": n_form,
+        "c_form": c_form
+    }
     return render(request, 'notes/update_notes.html', context)
 
 
@@ -107,19 +109,20 @@ def add_category(request):
 
 
 @login_required
-def update_category(request, pk):
-    object = get_object_or_404(Category, pk=pk, user=request.user).order_by('-created_at')
+def update_category(request, slug):
+    obj = get_object_or_404(Category, slug=slug, user=request.user)
+
     if request.method == 'POST':
-        form = CategoryForm(request.POST, instance=object)
+        form = CategoryForm(request.POST, instance=obj, user=request.user)   # ✅ pass user
         if form.is_valid():
             form.instance.user = request.user
             form.save()
-            messages.success(request, f'Your category has been updated!')
+            messages.success(request, 'Your category has been updated!')
             return redirect('list-category')
     else:
-        form = CategoryForm(instance=object,user=request.user)         
-    
-    return render(request, 'categories/update_category.html', {"form":form})
+        form = CategoryForm(instance=obj, user=request.user)   # ✅ pass user
+
+    return render(request, 'categories/update_category.html', {"form": form})
 
 
 
@@ -132,8 +135,8 @@ def list_category(request):
 
 
 @login_required
-def delete_category(request, pk):
-    category = get_object_or_404(Category, pk=pk, user=request.user)
+def delete_category(request, slug):
+    category = get_object_or_404(Category, slug=slug, user=request.user)
     if request.method == 'POST':
         category.delete()
         messages.success(request, f'Your category has been Deleted!')
@@ -144,8 +147,8 @@ def delete_category(request, pk):
 
 
 @login_required
-def notes_by_category(request, pk):
-    category = get_object_or_404(Category, pk=pk, user=request.user)
+def notes_by_category(request, slug):
+    category = get_object_or_404(Category, slug=slug, user=request.user)
     
     
     notes = Note.objects.filter(category=category, user=request.user)

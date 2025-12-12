@@ -21,7 +21,7 @@
                 {{ note.content|truncatewords:20 }}
               </p>
               {% if note.category.name is not None %}
-                <a class="fw-semibold text-secondary text-decoration-none" href="{% url 'notes-by-category' note.category.pk %}">
+                <a class="fw-semibold text-secondary text-decoration-none" href="{% url 'notes-by-category' note.category.slug %}">
                     {{ note.category.name }}</a>
               {% else %}
                 <span class="badge bg-light text-dark"> {{ note.category.name }} </span>
