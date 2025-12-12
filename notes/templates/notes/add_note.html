@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Add Note{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow-sm border-0" style="background-color:#fdfdfd;">
+    <!-- Soft header -->
+    <div class="card-header bg-light">
+      <h4 class="mb-0 fw-bold text-muted">Create a New Note</h4>
+    </div>
+
+    <div class="card-body">
+      <form method="POST" class="needs-validation" novalidate>
+        {% csrf_token %}
+        
+        <!-- Note form -->
+        <div class="mb-3">
+          {{ n_form.as_p }}
+        </div>
+
+        <div class="text-center my-3">
+        <div class="d-flex align-items-center">
+            <hr class="flex-grow-1">
+            <span class="mx-2 text-muted small fw-semibold">Choose from existing categories</span>
+            <hr class="flex-grow-1">
+        </div>
+        </div>
+
+        <!-- Category form -->
+        <div class="mb-3">
+          {{ c_form.as_p }}
+        </div>
+
+        <!-- Actions -->
+        <div class="d-flex justify-content-between mt-4">
+          <button type="submit" class="btn btn-outline-success btn-sm rounded-pill px-3">
+            Create
+          </button>
+          <a href="{% url 'list-note' %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+            View All Notes
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

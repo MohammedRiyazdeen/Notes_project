@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Delete Category{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow-sm border-danger">
+    <div class="card-header bg-light">
+      <h4 class="mb-0 text-danger">Delete Category</h4>
+    </div>
+    <div class="card-body">
+      <form method="POST">
+        {% csrf_token %}
+        <p class="lead">Are you sure you want to delete <strong>{{ category.name }}</strong>?</p>
+        <div class="d-flex justify-content-between mt-3">
+          <button type="submit" class="btn btn-danger">Yes, Delete</button>
+          <a href="{% url 'list-category' %}" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

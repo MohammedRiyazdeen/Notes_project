@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Notes{% endblock %}
+{% block content %}
+<div class="container mt-4">
+
+  <!-- Page header -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0 fw-bold text-muted">Your Notes</h2>
+    <a href="{% url 'add-note' %}" class="btn btn-outline-success btn-sm rounded-pill">+ Add Note</a>
+  </div>
+
+  <!-- Notes list -->
+  {% if notes %}
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      {% for note in notes %}
+        <div class="col">
+          <div class="card h-100 shadow-sm border-0" style="background-color:#fdfdfd;">
+            <div class="card-body">
+              <h5 class="card-title fw-semibold">{{ note.title }}</h5>
+              <p class="card-text text-secondary">
+                {{ note.content|truncatewords:20 }}
+              </p>
+              {% if note.category.name is not None %}
+                <a class="fw-semibold text-secondary text-decoration-none" href="{% url 'notes-by-category' note.category.pk %}">
+                    {{ note.category.name }}</a>
+              {% else %}
+                <span class="badge bg-light text-dark"> {{ note.category.name }} </span>
+              {% endif %}
+            </div>
+            <div class="card-footer bg-transparent d-flex justify-content-end">
+              <a href="{% url 'update-note' note.pk %}" 
+                 class="btn btn-outline-primary btn-sm rounded-pill me-2">Edit</a>
+              <a href="{% url 'delete-note' note.pk %}" 
+                 class="btn btn-outline-danger btn-sm rounded-pill">Delete</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <!-- Empty state -->
+    <div class="alert alert-light border text-center py-5">
+      <h5 class="fw-bold text-muted">No notes yet</h5>
+      <p class="text-secondary">Start fresh by adding your first note.</p>
+      <a href="{% url 'add-note' %}" class="btn btn-outline-success btn-sm rounded-pill">Create Note</a>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Create Category{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-light">
+      <h4 class="mb-0">Create Category</h4>
+    </div>
+    <div class="card-body">
+      <form method="POST" class="needs-validation" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-flex justify-content-between mt-3">
+          <button type="submit" class="btn btn-success">Create</button>
+          <a href="{% url 'list-category' %}" class="btn btn-outline-secondary">Back to Categories</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
