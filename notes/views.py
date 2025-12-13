@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Note,Category
 from django.contrib import messages 
 from .forms import NoteForm,CategoryForm
+from django.db.models import Q
 
 # Create your views here.
 
@@ -40,10 +41,23 @@ def Add_Note(request):
 
 @login_required
 def list_notes(request):
+    search_query = request.GET.get('q')
+
+    
     notes = Note.objects.filter(user=request.user).order_by('-created_at')
 
+    if search_query:
 
-    return render(request, 'notes/list_notes.html', {"notes":notes})
+        notes = notes.filter(
+            Q( title__icontains = search_query  ) | Q(content__icontains = search_query)
+            ).distinct()
+        
+    else:
+
+        notes = Note.objects.filter(user=request.user).order_by('-created_at')
+
+
+    return render(request, 'notes/list_notes.html', {"notes":notes, "query":search_query})
 
 
 @login_required
