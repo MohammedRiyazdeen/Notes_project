@@ -4,7 +4,7 @@ from .models import Note,Category
 from django.contrib import messages 
 from .forms import NoteForm,CategoryForm
 from django.db.models import Q
-
+from django.core.paginator import Paginator
 # Create your views here.
 
 @login_required
@@ -42,22 +42,22 @@ def Add_Note(request):
 @login_required
 def list_notes(request):
     search_query = request.GET.get('q')
-
-    
     notes = Note.objects.filter(user=request.user).order_by('-created_at')
-
     if search_query:
-
         notes = notes.filter(
             Q( title__icontains = search_query  ) | Q(content__icontains = search_query)
             ).distinct()
         
-    else:
+   # Pagination
+    paginator = Paginator(notes, 3)  # 3 notes per page
+    page_number = request.GET.get('page')
+    notes_page = paginator.get_page(page_number)
 
-        notes = Note.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'notes/list_notes.html', {
+        "notes": notes_page,
+        "query": search_query
+    })
 
-
-    return render(request, 'notes/list_notes.html', {"notes":notes, "query":search_query})
 
 
 @login_required

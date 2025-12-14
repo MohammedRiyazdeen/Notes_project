@@ -5,9 +5,7 @@
 
   <!-- Page header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="mb-0 fw-bold text-dark">
-       Your Notes
-    </h2>
+    <h2 class="mb-0 fw-bold text-dark">Your Notes</h2>
     <a href="{% url 'add-note' %}" 
        class="btn btn-success btn-sm rounded-pill px-3 shadow-sm fw-semibold">
         Add Note
@@ -50,29 +48,61 @@
             </div>
             <div class="card-footer bg-transparent d-flex justify-content-end border-0">
               <a href="{% url 'update-note' note.pk %}" 
-                 class="btn btn-outline-primary btn-sm rounded-pill px-3 me-2 fw-semibold">
-                  Edit
-              </a>
+                 class="btn btn-outline-primary btn-sm rounded-pill px-3 me-2 fw-semibold"> Edit</a>
               <a href="{% url 'delete-note' note.pk %}" 
-                 class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-semibold">
-                  Delete
-              </a>
+                 class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-semibold"> Delete</a>
             </div>
           </div>
         </div>
       {% endfor %}
     </div>
   {% else %}
-    <!-- Empty state -->
-    <div class="alert alert-light border text-center py-5 rounded-4 shadow-sm">
-      <h5 class="fw-bold text-muted">No notes yet</h5>
-      <p class="text-secondary">Start fresh by adding your first note!</p>
-      <a href="{% url 'add-note' %}" 
-         class="btn btn-success btn-sm rounded-pill px-3 fw-semibold shadow-sm">
-         Create Note
-      </a>
+    <!-- Empty states -->
+    {% if query %}
+      <!-- Search empty state -->
+      <div class="alert alert-light border text-center py-5 rounded-4 shadow-sm">
+        <h5 class="fw-bold text-muted"> No notes found for "{{ request.GET.q }}"</h5>
+        <p class="text-secondary">Try another keyword or create a new note.</p>
+        <a href="{% url 'add-note' %}" 
+           class="btn btn-success btn-sm rounded-pill px-3 fw-semibold shadow-sm">
+            Create Note
+        </a>
+      </div>
+    {% else %}
+      <!-- Default empty state -->
+      <div class="alert alert-light border text-center py-5 rounded-4 shadow-sm">
+        <h5 class="fw-bold text-muted"> No notes yet</h5>
+        <p class="text-secondary">Start fresh by adding your first note!</p>
+        <a href="{% url 'add-note' %}" 
+           class="btn btn-success btn-sm rounded-pill px-3 fw-semibold shadow-sm">
+            Create Note
+        </a>
+      </div>
+    {% endif %}
+  {% endif %}
+  
+  {% if notes.has_other_pages %}
+    <div class="d-flex justify-content-center mt-4">
+      {% if notes.has_previous %}
+        <a class="btn btn-outline-info mx-1" href="?q={{ query }}&page=1">First</a>
+        <a class="btn btn-outline-info mx-1" href="?q={{ query }}&page={{ notes.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      {% for num in notes.paginator.page_range %}
+        {% if notes.number == num %}
+          <a class="btn btn-info mx-1">{{ num }}</a>
+        {% elif num > notes.number|add:'-2' and num < notes.number|add:'2' %}
+          <a class="btn btn-outline-info mx-1" href="?q={{ query }}&page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if notes.has_next %}
+        <a class="btn btn-outline-info mx-1" href="?q={{ query }}&page={{ notes.next_page_number }}">Next</a>
+        <a class="btn btn-outline-info mx-1" href="?q={{ query }}&page={{ notes.paginator.num_pages }}">Last</a>
+      {% endif %}
     </div>
   {% endif %}
+
 
 </div>
 {% endblock %}
