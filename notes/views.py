@@ -49,7 +49,7 @@ def list_notes(request):
             ).distinct()
         
    # Pagination
-    paginator = Paginator(notes, 3)  # 3 notes per page
+    paginator = Paginator(notes, 4)  # 4 notes per page
     page_number = request.GET.get('page')
     notes_page = paginator.get_page(page_number)
 
