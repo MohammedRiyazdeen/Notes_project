@@ -11,8 +11,8 @@ A professional, secure, and responsive **Notes Management Application** built wi
 
 ## 🔗 Project Links
 
-- **Live Demo**: [Click here to view the app](https://your-app-name.onrender.com) *(Update this after deployment!)*
-- **GitHub Repository**: [MohammedRiyazdeen/Notes_project](https://github.com/MohammedRiyazdeen/Notes_project)
+- **Live Demo**: [https://notes-project-tj95.onrender.com](https://notes-project-tj95.onrender.com)
+- **GitHub Repository**: [https://github.com/MohammedRiyazdeen/Notes_project](https://github.com/MohammedRiyazdeen/Notes_project)
 
 ---
 
@@ -21,9 +21,9 @@ A professional, secure, and responsive **Notes Management Application** built wi
 *   **Secure Authentication**: Full login/signup system with password hashing and session management.
 *   **Persistent Storage**: Integrated with **PostgreSQL** for reliable data management in production.
 *   **User Isolation**: Middleware and query filtering ensure users only see and manage their own notes.
-*   **Search & Discovery**: Real-time filtering using Django's `Q` objects for efficient note searching.
-*   **Responsive UI**: Mobile-first design using **Bootstrap** with clean "Empty States" for better UX.
-*   **Pagination**: Hand-optimized pagination for handling large volumes of notes smoothly.
+*   **Search & Discovery**: Real-time filtering for efficient note searching.
+*   **Responsive UI**: Mobile-first design using **Bootstrap 5** with clean "Empty States."
+*   **Production Optimized**: Configured with WhiteNoise for static assets and Gunicorn as the WSGI server.
 
 ---
 
@@ -35,6 +35,15 @@ A professional, secure, and responsive **Notes Management Application** built wi
 *   **Middleware**: WhiteNoise (Static file serving)
 *   **WSGI Server**: Gunicorn
 *   **Environment Management**: `python-dotenv` for secret management
+
+---
+
+## 🧠 Core Concepts Demonstrated
+
+- **CRUD Architecture**: Implementing Create, Read, Update, and Delete operations.
+- **Data Security**: Protecting user-specific data from being accessed by other logged-in users.
+- **Environment Parity**: Managing different settings for Local vs. Production environments.
+- **Cloud Deployment**: Automating deployment via GitHub integration on Render.
 
 ---
 
@@ -67,4 +76,4 @@ A professional, secure, and responsive **Notes Management Application** built wi
 
 ## 📎 Author
 
-Built by **A. Riyaz** as a portfolio project. Focus on Django backend architecture, database relationships, and production deployment.
+Built by **Mohammed Riyazdeen** as a professional portfolio project. Focus on Django backend architecture and scalable cloud deployment.
